@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Snoop.EncryptionService
+namespace Snoop.API.EncryptionService
 {
     public class Program
     {

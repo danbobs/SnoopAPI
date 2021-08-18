@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Snoop.APIGateway.Controllers
+namespace Snoop.API.APIGateway.Controllers
 {
     [ApiController]
     [Route("[controller]")]

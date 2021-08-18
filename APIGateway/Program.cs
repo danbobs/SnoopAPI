@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Snoop.APIGateway
+namespace Snoop.API.APIGateway
 {
     public class Program
     {

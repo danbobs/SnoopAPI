@@ -11,8 +11,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Snoop.API.EncryptionService.Services;
+using Snoop.API.EncryptionService.Services.Interfaces;
+using Snoop.API.EncryptionService.Models;
 
-namespace Snoop.EncryptionService
+namespace Snoop.API.EncryptionService
 {
     public class Startup
     {
@@ -33,6 +36,9 @@ namespace Snoop.EncryptionService
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "EncryptionService", Version = "v1" });
             });
+            services.AddScoped<IEncrypter, StubEncrypter>();
+            services.AddScoped<IKeyStore<SimpleKey>, FileKeyStore<SimpleKey>>();
+            services.AddScoped<IKeyGenerator, KeyGenerator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
