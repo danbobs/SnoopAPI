@@ -10,7 +10,7 @@ Content-Type: application/json
 POST https://{{host}}/APIGateway/Decrypt HTTP/1.1
 Content-Type: application/json
 
-"blah"
+"blah - encrypted with pI6tiy1MUj"
 
 ### Health Check
 GET https://{{host}}/APIGateway/HealthCheck HTTP/1.1

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Snoop.API.APIGateway.Interfaces;
+using Snoop.API.APIGateway.Models;
 
 namespace Snoop.API.APIGateway.Controllers
 {
@@ -12,32 +14,47 @@ namespace Snoop.API.APIGateway.Controllers
     public class APIGatewayController : ControllerBase
     {
         private readonly ILogger<APIGatewayController> _logger;
+        private readonly IEncryptionServiceWrapper _encryptionServiceWrapper;
 
-        public APIGatewayController(ILogger<APIGatewayController> logger)
+        public APIGatewayController(ILogger<APIGatewayController> logger, IEncryptionServiceWrapper encryptionServiceWrapper)
         {
             _logger = logger;
+            _encryptionServiceWrapper = encryptionServiceWrapper;
         }
 
         [HttpPost]
         [Route("Encrypt")]
-        public string Encrypt([FromBody] string stringToEncrypt)
+        public async Task<IActionResult> Encrypt([FromBody] string stringToEncrypt)
         {
-            return $"{stringToEncrypt} - encrypted";
+            EncryptDecryptResult result = await _encryptionServiceWrapper.InvokeEncrypt(stringToEncrypt);
+
+            return StatusCode(result.StatusCode, result.Result);
         }
 
         [HttpPost]
         [Route("Decrypt")]
-        public string Decrypt([FromBody] string stringToDecrypt)
+        public async Task<IActionResult> Decrypt([FromBody] string stringToDecrypt)
         {
-            return $"{stringToDecrypt} - decrypted";
+            EncryptDecryptResult result = await _encryptionServiceWrapper.InvokeDecrypt(stringToDecrypt);
+
+            return StatusCode(result.StatusCode, result.Result);
         }
 
 
         [HttpGet]
         [Route("HealthCheck")]
-        public IActionResult HealthCheck()
+        public async Task<IActionResult> HealthCheck()
         {
-            return Ok();
+            var status = await _encryptionServiceWrapper.InvokeHealthCheck();
+
+            if (status.Available)
+            {
+                return new OkObjectResult(status);
+            }
+            else
+            {
+                return StatusCode(503, status);
+            }
         }
     }
 }

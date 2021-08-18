@@ -25,10 +25,10 @@ namespace Snoop.API.EncryptionService.Services
             _configuration = configuration;
         }
 
-        public string FileStoreDir => _configuration.GetValue<string>("FileKeyStore:FileDir");
-        public string KeyType => typeof(T).Name.ToString();
-        public string FileStorePath => Path.Combine(this.FileStoreDir, $"{this.KeyType}_Store.json");
-        public int KeyRetentionMax => _configuration.GetValue<int>("FileKeyStore:KeyRetentionMax");
+        private string FileStoreDir => _configuration.GetValue<string>("FileKeyStore:FileDir");
+        private string KeyType => typeof(T).Name.ToString();
+        private string FileStorePath => Path.Combine(this.FileStoreDir, $"{this.KeyType}_Store.json");
+        private int KeyRetentionMax => _configuration.GetValue<int>("FileKeyStore:KeyRetentionMax");
 
         public T GetActiveKey()
         {
