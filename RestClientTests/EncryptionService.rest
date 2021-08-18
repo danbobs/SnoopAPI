@@ -1,0 +1,19 @@
+@host = localhost:44398
+
+### Encrypt
+POST https://{{host}}/EncryptionService/Encrypt HTTP/1.1
+Content-Type: application/json
+
+"blah"
+
+### Decrypt
+POST https://{{host}}/EncryptionService/Decrypt HTTP/1.1
+Content-Type: application/json
+
+"blah"
+
+### RotateKeys
+GET https://{{host}}/EncryptionService/RotateKey HTTP/1.1
+
+### Health Check
+GET https://{{host}}/EncryptionService/HealthCheck HTTP/1.1
