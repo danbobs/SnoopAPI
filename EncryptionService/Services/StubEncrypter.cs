@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Snoop.API.EncryptionService.Models;
 using Snoop.API.EncryptionService.Services.Interfaces;
 using Snoop.Common.Model;
@@ -15,12 +16,14 @@ namespace Snoop.API.EncryptionService.Services
     {
         private readonly IKeyStore<SimpleKey> _keystore;
         private readonly IKeyGenerator _keyGenerator;
+        private readonly ILogger<StubEncrypter> _logger;
         private const int KEY_LENGTH = 10;
 
-        public StubEncrypter(IKeyStore<SimpleKey> keyStore, IKeyGenerator keyGenerator)
+        public StubEncrypter(IKeyStore<SimpleKey> keyStore, IKeyGenerator keyGenerator, ILogger<StubEncrypter> logger)
         {
             _keystore = keyStore;
             _keyGenerator = keyGenerator;
+            _logger = logger;
         }
         public bool TryEncrypt(string stringToEncrypt, out string encrypted)
         {
@@ -29,9 +32,11 @@ namespace Snoop.API.EncryptionService.Services
 
             if (activeKey == null)
             {
+                _logger.LogInformation("TryEncrypt: encryption {status}. {reason}.", "failed", "No active key");
                 return false;
             }
 
+            _logger.LogInformation("TryEncrypt: encryption {status}", "succeeded");
             encrypted = $"{stringToEncrypt}{GetEncryptionSuffix(activeKey.Value)}";
 
             return true;
@@ -51,11 +56,13 @@ namespace Snoop.API.EncryptionService.Services
             {
                 if (stringToDecrypt.EndsWith(GetEncryptionSuffix(key.Value)))
                 {
+                    _logger.LogInformation("TryDecrypt: decryption {status}", "succeeded");
                     decrypted = stringToDecrypt.Replace(GetEncryptionSuffix(key.Value), string.Empty);
                     return true;
                 }
             }
 
+            _logger.LogInformation("TryDecrypt: decryption {status}. {reason}", "failed", "No matching key found");
             return false;
         }
 

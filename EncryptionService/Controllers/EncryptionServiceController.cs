@@ -34,12 +34,13 @@ namespace Snoop.API.EncryptionService.Controllers
                 }
                 else
                 {
-                    return StatusCode(503, $"Service Unavailable - No keys have been defined");
+                    _logger.LogWarning("Encrypt failed. {status}. {reason}.","failed","No keys defined");
+                    return StatusCode(503, "Service Unavailable - No keys have been defined");
                 }
             }
             catch (Exception ex)
             {
-                //_logger.LogError()
+                _logger.LogError(ex, "Encrypt: Exception thrown");
                 return StatusCode(500, $"Enable to encrypt using active from key store - {ex.Message}");
             }
         }
@@ -56,12 +57,13 @@ namespace Snoop.API.EncryptionService.Controllers
                 }
                 else
                 {
+                    _logger.LogWarning("Decrypt {status}. {reason}.","failed", "Unable to decrypt with keys in keystore");
                     return StatusCode(500, $"Unable to decrypt with keys in keystore");
                 }
             }
             catch (Exception ex)
             {
-                //_logger.LogError()
+                _logger.LogError(ex, "Decrypt: Exception thrown");
                 return StatusCode(500, $"Unable to decrypt using keys from key store - {ex.Message}");
             }
         }
@@ -76,7 +78,7 @@ namespace Snoop.API.EncryptionService.Controllers
             }
             catch (Exception ex)
             {
-                //_logger.LogError()
+                _logger.LogError(ex, "RotateKey: Exception thrown");
                 return StatusCode(500, $"Unable to create new key in key store {ex.Message}");
             }
 

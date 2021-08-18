@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Snoop.API.APIGateway.Interfaces;
 using Snoop.API.APIGateway.Models;
 using Snoop.Common.Model;
@@ -17,13 +18,14 @@ namespace Snoop.API.APIGateway.Services
     {
         private readonly IConfiguration _configuration;
         private HttpClient _httpClient;
+        private readonly ILogger<EncryptionServiceWrapper> _logger;
 
-        public EncryptionServiceWrapper(IConfiguration configuration)
+        public EncryptionServiceWrapper(IConfiguration configuration, ILogger<EncryptionServiceWrapper> logger)
         {
             _configuration = configuration;
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri(this.EncryptionServiceBaseUrl);
-
+            _logger = logger;
         }
 
         private string EncryptionServiceBaseUrl => _configuration.GetValue<string>("APIGateway:EndpointBaseUrl");
@@ -45,6 +47,7 @@ namespace Snoop.API.APIGateway.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "InvokeEncrypt: Exception thrown");
                 return new EncryptDecryptResult()
                 {
                     StatusCode = 0,
@@ -70,6 +73,7 @@ namespace Snoop.API.APIGateway.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "InvokeDecrypt: Exception thrown");
                 return new EncryptDecryptResult()
                 {
                     StatusCode = 0,
@@ -88,8 +92,9 @@ namespace Snoop.API.APIGateway.Services
 
                 return JsonConvert.DeserializeObject<HealthStatus>(await response.Content.ReadAsStringAsync());
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "InvokeHealthCheck: Exception thrown");
                 return new HealthStatus()
                 {
                     Available = false,

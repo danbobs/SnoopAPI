@@ -6,23 +6,26 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Snoop.API.EncryptionService.Models;
 using Snoop.API.EncryptionService.Services.Interfaces;
 
 namespace Snoop.API.EncryptionService.Services
 {
     /// <summary>
-    /// Dumb implementation of a key store which stores a list of keys of a given type in a json file
+    /// Dumb implementation of a key store which stores a list of keys of a given type in a local json file
     /// Not fit for scaling
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class FileKeyStore<T> : IKeyStore<T> where T : Key
     {
         private readonly IConfiguration _configuration;
+        private readonly ILogger<FileKeyStore<T>> _logger;
 
-        public FileKeyStore(IConfiguration configuration)
+        public FileKeyStore(IConfiguration configuration, ILogger<FileKeyStore<T>> logger)
         {
             _configuration = configuration;
+            _logger = logger;
         }
 
         private string FileStoreDir => _configuration.GetValue<string>("FileKeyStore:FileDir");
@@ -40,6 +43,7 @@ namespace Snoop.API.EncryptionService.Services
 
             if (!File.Exists(this.FileStorePath))
             {
+                _logger.LogInformation("GetKeys: FileStore not found at {FilePath}", this.FileStorePath);
                 return new List<T>();
             }
 
@@ -49,10 +53,13 @@ namespace Snoop.API.EncryptionService.Services
 
         public void StoreNewKey(T newKey)
         {
+           
             var currentKeys = this.GetKeys().Take(this.KeyRetentionMax - 1).ToList();
             currentKeys.Add(newKey);
+            _logger.LogInformation("StoreNewKey: Storing new {Type} key. Currently {KeyCount} keys. Retention Max is {KeyRetentionMax}", typeof(T).Name , currentKeys.Count(), this.KeyRetentionMax);
             var json = JsonConvert.SerializeObject(currentKeys);
             File.WriteAllText(this.FileStorePath, json);
+            _logger.LogInformation("StoreNewKey: Keys successfully written to {FilePath}", this.FileStorePath);
         }
     }
 }
