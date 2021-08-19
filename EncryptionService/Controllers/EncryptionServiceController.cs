@@ -26,6 +26,11 @@ namespace Snoop.API.EncryptionService.Controllers
         [Route("Encrypt")]
         public IActionResult Encrypt([FromBody] string textToEncrypt)
         {
+            if (string.IsNullOrEmpty(textToEncrypt))
+            {
+                return BadRequest("Text payload should not be empty");
+            }
+
             try
             {
                 if (_encrypter.TryEncrypt(textToEncrypt, out string encrypted))
@@ -49,6 +54,12 @@ namespace Snoop.API.EncryptionService.Controllers
         [Route("Decrypt")]
         public IActionResult Decrypt([FromBody] string textToDecrypt)
         {
+
+            if (string.IsNullOrEmpty(textToDecrypt))
+            {
+                return BadRequest("Text payload should not be empty");
+            }
+
             try
             {
                 if (_encrypter.TryDecrypt(textToDecrypt, out string decrypted))

@@ -26,8 +26,12 @@ namespace Snoop.API.APIGateway.Controllers
         [Route("Encrypt")]
         public async Task<IActionResult> Encrypt([FromBody] string textToEncrypt)
         {
+            if (string.IsNullOrEmpty(textToEncrypt))
+            {
+                return BadRequest("Text payload should not be empty");
+            }
+
             EncryptDecryptResult result = await _encryptionServiceWrapper.InvokeEncrypt(textToEncrypt);
-            _logger.LogInformation("Encrypt: statusCode - {statusCode}", result.StatusCode);
 
             return StatusCode(result.StatusCode, result.Result);
         }
@@ -36,8 +40,12 @@ namespace Snoop.API.APIGateway.Controllers
         [Route("Decrypt")]
         public async Task<IActionResult> Decrypt([FromBody] string textToDecrypt)
         {
+            if (string.IsNullOrEmpty(textToDecrypt))
+            {
+                return BadRequest("Text payload should not be empty");
+            }
+
             EncryptDecryptResult result = await _encryptionServiceWrapper.InvokeDecrypt(textToDecrypt);
-            _logger.LogInformation("Decrypt: statusCode - {statusCode}", result.StatusCode);
 
             return StatusCode(result.StatusCode, result.Result);
         }
