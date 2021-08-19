@@ -14,6 +14,10 @@ using Snoop.Common.Model;
 
 namespace Snoop.API.APIGateway.Services
 {
+    /// <summary>
+    /// TODO need to collapse this class into the similarly named class in the Background Key Rotation project and move the result into the common project
+    /// Needs a bit of finessing to get the dependency injection working cross-project though
+    /// </summary>
     public class EncryptionServiceWrapper : IEncryptionServiceWrapper
     {
         private readonly IConfiguration _configuration;
