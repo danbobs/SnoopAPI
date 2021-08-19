@@ -17,7 +17,6 @@ namespace Snoop.API.EncryptionService.Services
     /// Dumb implementation of a key store which stores a list of keys of a given type in a local json file
     /// Not fit for scaling
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     public class FileKeyStore<T> : IKeyStore<T> where T : Key
     {
         private readonly IConfiguration _configuration;
