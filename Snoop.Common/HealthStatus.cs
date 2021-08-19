@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Snoop.Common.Model
+namespace Snoop.Common.Models
 {
     public class HealthStatus
     {

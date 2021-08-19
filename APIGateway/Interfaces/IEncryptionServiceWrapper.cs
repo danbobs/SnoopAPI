@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Snoop.API.APIGateway.Models;
-using Snoop.Common.Model;
+using Snoop.Common.Models;
 
 namespace Snoop.API.APIGateway.Interfaces
 {
@@ -12,6 +12,5 @@ namespace Snoop.API.APIGateway.Interfaces
         Task<EncryptDecryptResult> InvokeEncrypt(string textToEncrypt);
         Task<EncryptDecryptResult> InvokeDecrypt(string textToDecrypt);
         Task<HealthStatus> InvokeHealthCheck();
-
     }
 }

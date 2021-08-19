@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Snoop.API.EncryptionService.Models;
 using Snoop.API.EncryptionService.Services.Interfaces;
-using Snoop.Common.Model;
+using Snoop.Common.Models;
 
 namespace Snoop.API.EncryptionService.Services
 {
@@ -74,25 +74,7 @@ namespace Snoop.API.EncryptionService.Services
 
         public HealthStatus GetStatus()
         {
-            try
-            {
-                var keys = _keystore.GetKeys();
-
-                if (!keys.Any())
-                {
-                    return new HealthStatus() { Available = false, NewestKey = "No keys in key store", OldestKey = "No keys in key store" };
-                }
-
-                var newestKeyStr = keys.First().Created.ToString();
-                var oldestKeyStr = keys.Last().Created.ToString();
-
-                return new HealthStatus() { Available = true, NewestKey = newestKeyStr, OldestKey = oldestKeyStr };
-
-            }
-            catch
-            {
-                return new HealthStatus() { Available = false, NewestKey = "Unable to contact key store", OldestKey = "Unable to contact key store" };
-            }
+            return _keystore.GetStatus();
         }
 
         private string GetEncryptionSuffix(string key)

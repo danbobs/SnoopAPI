@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Snoop.API.APIGateway.Interfaces;
 using Snoop.API.APIGateway.Models;
-using Snoop.Common.Model;
+using Snoop.Common.Models;
 
 namespace Snoop.API.APIGateway.Services
 {

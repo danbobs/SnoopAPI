@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Snoop.API.EncryptionService.Models;
 using Snoop.API.EncryptionService.Services.Interfaces;
+using Snoop.Common.Models;
 
 namespace Snoop.API.EncryptionService.Services
 {
@@ -60,6 +61,29 @@ namespace Snoop.API.EncryptionService.Services
             var json = JsonConvert.SerializeObject(currentKeys);
             File.WriteAllText(this.FileStorePath, json);
             _logger.LogInformation("StoreNewKey: Keys successfully written to {FilePath}", this.FileStorePath);
+        }
+
+        public HealthStatus GetStatus()
+        {
+            try
+            {
+                var keys = this.GetKeys();
+
+                if (!keys.Any())
+                {
+                    return new HealthStatus() { Available = false, NewestKey = "No keys in key store", OldestKey = "No keys in key store" };
+                }
+
+                var newestKeyStr = keys.First().Created.ToString();
+                var oldestKeyStr = keys.Last().Created.ToString();
+
+                return new HealthStatus() { Available = true, NewestKey = newestKeyStr, OldestKey = oldestKeyStr };
+
+            }
+            catch
+            {
+                return new HealthStatus() { Available = false, NewestKey = "Unable to contact key store", OldestKey = "Unable to contact key store" };
+            }
         }
     }
 }
