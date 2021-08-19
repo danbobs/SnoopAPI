@@ -42,7 +42,7 @@ namespace Snoop.API.EncryptionService
 
             services.AddAWSService<IAmazonS3>(new AWSOptions
             {
-                // credential omitted!
+                // credentials ommitted!
                 Region = Amazon.RegionEndpoint.GetBySystemName("eu-west-2")
             });
 

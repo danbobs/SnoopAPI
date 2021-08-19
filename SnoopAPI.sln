@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snoop.API.APIGateway", "API
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snoop.API.EncryptionService", "EncryptionService\Snoop.API.EncryptionService.csproj", "{85CCB36B-E8A1-4822-9E24-652DE712D0C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snoop.Common", "Snoop.Common\Snoop.Common.csproj", "{1CA8A26E-F88F-4B57-A141-D7E30698B2A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snoop.Common", "Snoop.Common\Snoop.Common.csproj", "{1CA8A26E-F88F-4B57-A141-D7E30698B2A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snoop.Background.KeyRotation", "Snoop.BackgroundService.KeyRotation\Snoop.Background.KeyRotation.csproj", "{068DE627-2F33-4588-A6BB-1F30CE19A646}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snoop.Background.KeyRotation", "Snoop.BackgroundService.KeyRotation\Snoop.Background.KeyRotation.csproj", "{068DE627-2F33-4588-A6BB-1F30CE19A646}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
