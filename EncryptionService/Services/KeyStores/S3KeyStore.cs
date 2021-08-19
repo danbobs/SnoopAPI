@@ -94,6 +94,7 @@ namespace Snoop.API.EncryptionService.Services
 
         private string DownloadS3Blob()
         {
+            // todo: nasty use of result here. Will have to make all this async!
             var response = _s3Client.GetObjectAsync(this.S3Bucket, this.Blobname).Result;
             MemoryStream memoryStream = new MemoryStream();
 
@@ -105,6 +106,7 @@ namespace Snoop.API.EncryptionService.Services
         private bool BlobExists()
         {
             ListObjectsV2Request request = new ListObjectsV2Request() { BucketName = this.S3Bucket };
+            // todo: nasty use of result here. Will have to make all this async!
             ListObjectsV2Response response = _s3Client.ListObjectsV2Async(request).Result;
 
             return response.S3Objects.Any(o => o.Key == this.Blobname);
