@@ -34,10 +34,10 @@ namespace Snoop.API.APIGateway.Services
 
         private string EncryptionServiceBaseUrl => _configuration.GetValue<string>("APIGateway:EndpointBaseUrl");
 
-        public async Task<EncryptDecryptResult> InvokeEncrypt(string stringToEncrypt)
+        public async Task<EncryptDecryptResult> InvokeEncrypt(string textToEncrypt)
         {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "Encrypt");
-            request.Content = new StringContent($"\"{stringToEncrypt}\"", Encoding.UTF8, "application/json");
+            request.Content = new StringContent($"\"{textToEncrypt}\"", Encoding.UTF8, "application/json");
             try
             {
                 var response = await _httpClient.SendAsync(request);
@@ -60,10 +60,10 @@ namespace Snoop.API.APIGateway.Services
             }
         }
 
-        public async Task<EncryptDecryptResult> InvokeDecrypt(string stringToDecrypt)
+        public async Task<EncryptDecryptResult> InvokeDecrypt(string textToDecrypt)
         {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "Decrypt");
-            request.Content = new StringContent($"\"{stringToDecrypt}\"", Encoding.UTF8, "application/json");
+            request.Content = new StringContent($"\"{textToDecrypt}\"", Encoding.UTF8, "application/json");
             try
             {
                 var response = await _httpClient.SendAsync(request);

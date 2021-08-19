@@ -10,7 +10,7 @@ Content-Type: application/json
 POST https://{{host}}/EncryptionService/Decrypt HTTP/1.1
 Content-Type: application/json
 
-"blah - encrypted with KbHplVR9Ys"
+"E6MtprrrHJuBaYms4FFioA=="
 
 ### RotateKeys
 GET https://{{host}}/EncryptionService/RotateKey HTTP/1.1

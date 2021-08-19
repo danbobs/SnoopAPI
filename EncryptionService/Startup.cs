@@ -36,8 +36,10 @@ namespace Snoop.API.EncryptionService
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "EncryptionService", Version = "v1" });
             });
-            services.AddScoped<IEncrypter, StubEncrypter>();
-            services.AddScoped<IKeyStore<SimpleKey>, FileKeyStore<SimpleKey>>();
+            //services.AddScoped<IEncrypter, StubEncrypter>()
+            services.AddScoped<IEncrypter, AESEncrypter>();
+            //services.AddScoped<IKeyStore<SimpleKey>, FileKeyStore<SimpleKey>>();
+            services.AddScoped<IKeyStore<AsymmetricKey>, FileKeyStore<AsymmetricKey>>();
             services.AddScoped<IKeyGenerator, KeyGenerator>();
         }
 

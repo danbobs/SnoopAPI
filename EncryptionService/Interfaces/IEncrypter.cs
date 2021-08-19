@@ -9,8 +9,8 @@ namespace Snoop.API.EncryptionService.Services.Interfaces
 {
     public interface IEncrypter
     {
-        bool TryEncrypt(string stringToEncrypt, out string encrypted);
-        bool TryDecrypt(string stringToDecrypt, out string decrypted);
+        bool TryEncrypt(string textToEncrypt, out string encrypted);
+        bool TryDecrypt(string textToDecrypt, out string decrypted);
         void RotateKeys();
         HealthStatus GetStatus();   
     }

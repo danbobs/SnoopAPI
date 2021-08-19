@@ -24,9 +24,9 @@ namespace Snoop.API.APIGateway.Controllers
 
         [HttpPost]
         [Route("Encrypt")]
-        public async Task<IActionResult> Encrypt([FromBody] string stringToEncrypt)
+        public async Task<IActionResult> Encrypt([FromBody] string textToEncrypt)
         {
-            EncryptDecryptResult result = await _encryptionServiceWrapper.InvokeEncrypt(stringToEncrypt);
+            EncryptDecryptResult result = await _encryptionServiceWrapper.InvokeEncrypt(textToEncrypt);
             _logger.LogInformation("Encrypt: statusCode - {statusCode}", result.StatusCode);
 
             return StatusCode(result.StatusCode, result.Result);
@@ -34,9 +34,9 @@ namespace Snoop.API.APIGateway.Controllers
 
         [HttpPost]
         [Route("Decrypt")]
-        public async Task<IActionResult> Decrypt([FromBody] string stringToDecrypt)
+        public async Task<IActionResult> Decrypt([FromBody] string textToDecrypt)
         {
-            EncryptDecryptResult result = await _encryptionServiceWrapper.InvokeDecrypt(stringToDecrypt);
+            EncryptDecryptResult result = await _encryptionServiceWrapper.InvokeDecrypt(textToDecrypt);
             _logger.LogInformation("Decrypt: statusCode - {statusCode}", result.StatusCode);
 
             return StatusCode(result.StatusCode, result.Result);

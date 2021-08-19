@@ -25,7 +25,7 @@ namespace Snoop.API.EncryptionService.Services
             _keyGenerator = keyGenerator;
             _logger = logger;
         }
-        public bool TryEncrypt(string stringToEncrypt, out string encrypted)
+        public bool TryEncrypt(string textToEncrypt, out string encrypted)
         {
             encrypted = null;
             var activeKey = _keystore.GetActiveKey();
@@ -37,12 +37,12 @@ namespace Snoop.API.EncryptionService.Services
             }
 
             _logger.LogInformation("TryEncrypt: encryption {status}", "succeeded");
-            encrypted = $"{stringToEncrypt}{GetEncryptionSuffix(activeKey.Value)}";
+            encrypted = $"{textToEncrypt}{GetEncryptionSuffix(activeKey.Value)}";
 
             return true;
         }
 
-        public bool TryDecrypt(string stringToDecrypt, out string decrypted)
+        public bool TryDecrypt(string textToDecrypt, out string decrypted)
         {
             decrypted = null;
             var keys = _keystore.GetKeys();
@@ -54,10 +54,10 @@ namespace Snoop.API.EncryptionService.Services
 
             foreach (var key in keys)
             {
-                if (stringToDecrypt.EndsWith(GetEncryptionSuffix(key.Value)))
+                if (textToDecrypt.EndsWith(GetEncryptionSuffix(key.Value)))
                 {
                     _logger.LogInformation("TryDecrypt: decryption {status}", "succeeded");
-                    decrypted = stringToDecrypt.Replace(GetEncryptionSuffix(key.Value), string.Empty);
+                    decrypted = textToDecrypt.Replace(GetEncryptionSuffix(key.Value), string.Empty);
                     return true;
                 }
             }

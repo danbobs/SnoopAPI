@@ -24,11 +24,11 @@ namespace Snoop.API.EncryptionService.Controllers
 
         [HttpPost]
         [Route("Encrypt")]
-        public IActionResult Encrypt([FromBody] string stringToEncrypt)
+        public IActionResult Encrypt([FromBody] string textToEncrypt)
         {
             try
             {
-                if (_encrypter.TryEncrypt(stringToEncrypt, out string encrypted))
+                if (_encrypter.TryEncrypt(textToEncrypt, out string encrypted))
                 {
                     return new OkObjectResult(encrypted);
                 }
@@ -41,17 +41,17 @@ namespace Snoop.API.EncryptionService.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Encrypt: Exception thrown");
-                return StatusCode(500, $"Enable to encrypt using active from key store - {ex.Message}");
+                return StatusCode(500, $"Unable to encrypt using active key from key store - {ex.Message}");
             }
         }
 
         [HttpPost]
         [Route("Decrypt")]
-        public IActionResult Decrypt([FromBody] string stringToDecrypt)
+        public IActionResult Decrypt([FromBody] string textToDecrypt)
         {
             try
             {
-                if (_encrypter.TryDecrypt(stringToDecrypt, out string decrypted))
+                if (_encrypter.TryDecrypt(textToDecrypt, out string decrypted))
                 {
                     return new OkObjectResult(decrypted);
                 }
