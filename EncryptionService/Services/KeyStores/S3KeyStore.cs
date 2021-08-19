@@ -14,6 +14,9 @@ using System.Text;
 
 namespace Snoop.API.EncryptionService.Services
 {
+    /// <summary>
+    ///  Key store that uses an S3 blob to store keys. Next step would be to add a caching layer in here.
+    /// </summary>
     public class S3KeyStore<T> : IKeyStore<T> where T : Key
     {
         private readonly IConfiguration _configuration;
