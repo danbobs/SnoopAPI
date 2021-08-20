@@ -8,7 +8,7 @@ Upon opening the solution, set the Snoop.API.EncryptionService, Snoop.API.APIGat
 
 #### Snoop.API.EncryptionService
 * DI is currently set to use an AES encrypter and S3 as a keystore. Initial stub implementations did fake encryption and stored in a local file.
-* AWS credentials configured in startup,cs but not published in github (will be present in supplied zuip). In real life would use IAM roles obviously. The credential are only good for writing/reading to a bucket.
+* AWS credentials configured in startup,cs but not published in github (will be present in supplied zip). In real life would use IAM roles obviously. The credential are only good for writing/reading to a bucket.
 
 ####  Snoop.API.APIGateway
 * Calls the encryption service with a http client
