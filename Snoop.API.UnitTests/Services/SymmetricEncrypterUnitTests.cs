@@ -1,17 +1,13 @@
-using System;
-using Xunit;
-using AutoFixture;
-using AutoFixture.Xunit2;
-using AutoFixture.AutoMoq;
-using FluentAssertions;
-using System.Linq;
-using System.Text;
 using System.Security.Cryptography;
+using System.Text;
+using AutoFixture;
+using FluentAssertions;
 using Moq;
-using Snoop.API.EncryptionService.Services.Interfaces;
-using Snoop.API.EncryptionService.Services;
 using Snoop.API.EncryptionService.Models;
+using Snoop.API.EncryptionService.Services;
+using Snoop.API.EncryptionService.Services.Interfaces;
 using Snoop.Common.Models;
+using Xunit;
 
 namespace Snoop.API.UnitTests
 {

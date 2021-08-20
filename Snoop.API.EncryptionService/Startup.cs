@@ -1,23 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Threading.Tasks;
-using Amazon.S3;
 using Amazon.Extensions.NETCore.Setup;
 using Amazon.Runtime;
+using Amazon.S3;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Snoop.API.EncryptionService.Models;
 using Snoop.API.EncryptionService.Services;
 using Snoop.API.EncryptionService.Services.Interfaces;
-using Snoop.API.EncryptionService.Models;
 
 namespace Snoop.API.EncryptionService
 {
@@ -43,13 +36,13 @@ namespace Snoop.API.EncryptionService
 
             services.AddAWSService<IAmazonS3>(new AWSOptions
             {
-                // credentials omitted
+                // credentials omitted!
                 Region = Amazon.RegionEndpoint.GetBySystemName("eu-west-2")
             });
 
-            /*============= Depencdency Injection ============= */
+            /*============= Dependency Injection ============= */
 
-            // Stub implementation
+            // Stub implementationa
             //services.AddScoped<IEncrypter, StubEncrypter>()
             //services.AddScoped<IKeyStore<SimpleKey>, FileKeyStore<SimpleKey>>();
             

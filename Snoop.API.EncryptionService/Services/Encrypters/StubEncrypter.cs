@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Snoop.API.EncryptionService.Models;
 using Snoop.API.EncryptionService.Services.Interfaces;

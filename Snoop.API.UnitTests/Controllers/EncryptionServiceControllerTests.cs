@@ -1,24 +1,16 @@
 ﻿using System;
 using System.Net;
-using System.Threading.Tasks;
-using Xunit;
-using AutoFixture;
-using AutoFixture.Xunit2;
-using AutoFixture.AutoMoq;
-using FluentAssertions;
-using System.Linq;
+using System.Net.Http;
 using System.Text;
-using System.Security.Cryptography;
-using Moq;
-using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
+using AutoFixture;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using System.Net.Http;
-using System.Net.Http.Headers;
+using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using Snoop.API.EncryptionService.Services.Interfaces;
-using Snoop.API.EncryptionService.Services;
-using Snoop.API.EncryptionService.Models;
-using Snoop.Common.Models;
+using Xunit;
 
 namespace Snoop.API.UnitTests.Controllers
 {

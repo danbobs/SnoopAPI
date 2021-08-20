@@ -1,6 +1,9 @@
-﻿using Amazon.S3;
-using Amazon.S3.Transfer;
+﻿using System.IO;
+using System.Linq;
+using System.Text;
+using Amazon.S3;
 using Amazon.S3.Model;
+using Amazon.S3.Transfer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -8,9 +11,6 @@ using Snoop.API.EncryptionService.Models;
 using Snoop.API.EncryptionService.Services.Interfaces;
 using Snoop.Common.Models;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace Snoop.API.EncryptionService.Services
 {

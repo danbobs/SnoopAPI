@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Snoop.API.EncryptionService.Models;
 using Snoop.Common.Models;
 
@@ -12,9 +8,7 @@ namespace Snoop.API.EncryptionService.Services.Interfaces
     {
         void StoreNewKey(T newKey);
         IEnumerable<T> GetKeys();
-
         T GetActiveKey();
-
         HealthStatus GetStatus();
     }
 }

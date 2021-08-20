@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snoop.Common.Models;
+﻿using Snoop.Common.Models;
 
 namespace Snoop.API.EncryptionService.Services.Interfaces
 {
