@@ -1,5 +1,9 @@
 # SnoopAPI
 
+## Important
+
+Upon opening the solution, set the Snoop.API.EncryptionService, Snoop.API.APIGateway and Snoop.Background.KeyRotation as startup projects.
+
 ## Projects
 
 #### Snoop.API.EncryptionService
