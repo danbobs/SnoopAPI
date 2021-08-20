@@ -10,6 +10,7 @@
     <PackageReference Include="AutoFixture.AutoMoq" Version="4.17.0" />
     <PackageReference Include="AutoFixture.Xunit2" Version="4.17.0" />
     <PackageReference Include="FluentAssertions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.9" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="Moq" Version="4.16.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -27,10 +28,6 @@
     <ProjectReference Include="..\Snoop.API.APIGateway\Snoop.API.APIGateway.csproj" />
     <ProjectReference Include="..\Snoop.API.EncryptionService\Snoop.API.EncryptionService.csproj" />
     <ProjectReference Include="..\Snoop.Common\Snoop.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>
