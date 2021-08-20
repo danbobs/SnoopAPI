@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Amazon.S3;
 using Amazon.Extensions.NETCore.Setup;
@@ -42,15 +43,19 @@ namespace Snoop.API.EncryptionService
 
             services.AddAWSService<IAmazonS3>(new AWSOptions
             {
-                // credentials ommitted!
+                // credentials omitted
                 Region = Amazon.RegionEndpoint.GetBySystemName("eu-west-2")
             });
 
-            // DI Configuration
+            /*============= Depencdency Injection ============= */
+
+            // Stub implementation
             //services.AddScoped<IEncrypter, StubEncrypter>()
-            services.AddScoped<IEncrypter, AESEncrypter>();
             //services.AddScoped<IKeyStore<SimpleKey>, FileKeyStore<SimpleKey>>();
-            services.AddScoped<IKeyStore<AsymmetricKey>, S3KeyStore<AsymmetricKey>>();
+            
+            services.AddScoped<IEncrypter, SymmetricKeyEncrypter>();
+            services.AddTransient<SymmetricAlgorithm, AesCryptoServiceProvider>();
+            services.AddScoped<IKeyStore<SymmetricKey>, S3KeyStore<SymmetricKey>>();
             services.AddScoped<IKeyGenerator, KeyGenerator>();
 
 

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Snoop.API.EncryptionService.Models
 {
-    public class AsymmetricKey : Key
+    public class SymmetricKey : Key
     {
-        public string Private { get; set; }
-        public string Public { get; set; }
+        public string InitializationVector { get; set; }
+        public string Key { get; set; }
     }
 }

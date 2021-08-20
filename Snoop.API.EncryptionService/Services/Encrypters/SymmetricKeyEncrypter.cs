@@ -12,19 +12,21 @@ using Snoop.Common.Models;
 
 namespace Snoop.API.EncryptionService.Services
 {
-    public class AESEncrypter : IEncrypter
+    public class SymmetricKeyEncrypter : IEncrypter
     {
-        private readonly IKeyStore<AsymmetricKey> _keystore;
+        public const int KEY_LENGTH = 16; // 16 bytes * 8 bits = 128 bit encryption - todo: use SymmetricAlgorithm.LegalKeySizes
+        private readonly SymmetricAlgorithm _symmetricAlgorithm;
+        private readonly IKeyStore<SymmetricKey> _keystore;
         private readonly IKeyGenerator _keyGenerator;
-        private readonly ILogger<AESEncrypter> _logger;
-        private const int KEY_LENGTH = 16;
+        private readonly ILogger<SymmetricAlgorithm> _logger;
         private const PaddingMode PADDING_MODE = PaddingMode.PKCS7; 
 
-        public AESEncrypter(IKeyStore<AsymmetricKey> keyStore, IKeyGenerator keyGenerator, ILogger<AESEncrypter> logger)
+        public SymmetricKeyEncrypter(IKeyStore<SymmetricKey> keyStore, IKeyGenerator keyGenerator, ILogger<SymmetricAlgorithm> logger, SymmetricAlgorithm symmetricAlgorithm)
         {
             _keystore = keyStore;
             _keyGenerator = keyGenerator;
             _logger = logger;
+            _symmetricAlgorithm = symmetricAlgorithm;
         }
         public bool TryEncrypt(string textToEncrypt, out string encrypted)
         {
@@ -37,14 +39,13 @@ namespace Snoop.API.EncryptionService.Services
                 return false;
             }
 
-            var privateKeyBytes = GetBytes(activeKey.Private);
-            var publicKeyBytes = GetBytes(activeKey.Public);
+            var privateKeyBytes = GetBytes(activeKey.InitializationVector);
+            var publicKeyBytes = GetBytes(activeKey.Key);
             var bytesToEncrypt = GetBytes(textToEncrypt);
 
-            using AesCryptoServiceProvider aes = new AesCryptoServiceProvider();
-            aes.Padding = PADDING_MODE;
+            _symmetricAlgorithm.Padding = PADDING_MODE;
             using var memStream = new MemoryStream();
-            using var cryptoStream = new CryptoStream(memStream, aes.CreateEncryptor(publicKeyBytes, privateKeyBytes), CryptoStreamMode.Write);
+            using var cryptoStream = new CryptoStream(memStream, _symmetricAlgorithm.CreateEncryptor(publicKeyBytes, privateKeyBytes), CryptoStreamMode.Write);
             cryptoStream.Write(bytesToEncrypt, 0, bytesToEncrypt.Length);
             cryptoStream.FlushFinalBlock();
             encrypted = Convert.ToBase64String(memStream.ToArray());
@@ -69,15 +70,14 @@ namespace Snoop.API.EncryptionService.Services
 
             foreach (var key in keys)
             {
-                var privateKeyBytes = GetBytes(key.Private);
-                var publicKeyBytes = GetBytes(key.Public);
+                var privateKeyBytes = GetBytes(key.InitializationVector);
+                var publicKeyBytes = GetBytes(key.Key);
 
                 try
                 {
-                    using AesCryptoServiceProvider aes = new AesCryptoServiceProvider();
-                    aes.Padding = PADDING_MODE;
+                    _symmetricAlgorithm.Padding = PADDING_MODE;
                     using var memStream = new MemoryStream();
-                    using var cryptoStream = new CryptoStream(memStream, aes.CreateDecryptor(publicKeyBytes, privateKeyBytes), CryptoStreamMode.Write);
+                    using var cryptoStream = new CryptoStream(memStream, _symmetricAlgorithm.CreateDecryptor(publicKeyBytes, privateKeyBytes), CryptoStreamMode.Write);
                     cryptoStream.Write(bytesToDecrypt, 0, bytesToDecrypt.Length);
                     cryptoStream.FlushFinalBlock();
                     decrypted = Encoding.UTF8.GetString(memStream.ToArray());
@@ -100,7 +100,7 @@ namespace Snoop.API.EncryptionService.Services
 
         public void RotateKeys()
         {
-            var key = new AsymmetricKey() { Created = DateTime.Now, Public = _keyGenerator.GetUniqueKey(KEY_LENGTH), Private = _keyGenerator.GetUniqueKey(KEY_LENGTH)};
+            var key = new SymmetricKey() { Created = DateTime.Now, Key = _keyGenerator.GetUniqueKey(KEY_LENGTH), InitializationVector = _keyGenerator.GetUniqueKey(KEY_LENGTH)};
             _keystore.StoreNewKey(key);
         }
 
