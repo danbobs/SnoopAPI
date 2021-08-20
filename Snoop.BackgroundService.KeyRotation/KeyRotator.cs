@@ -30,7 +30,6 @@ namespace Snoop.Background.KeyRotation
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogInformation("KeyRotator running at: {time}", DateTimeOffset.Now);
                 await Task.Delay(10000, stoppingToken);
             }
         }

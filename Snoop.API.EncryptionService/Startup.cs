@@ -42,10 +42,10 @@ namespace Snoop.API.EncryptionService
 
             /*============= Dependency Injection ============= */
 
-            // Stub implementationa
-            //services.AddScoped<IEncrypter, StubEncrypter>()
+            // Stub implementations
+            //services.AddScoped<IEncrypter, StubEncrypter>();
             //services.AddScoped<IKeyStore<SimpleKey>, FileKeyStore<SimpleKey>>();
-            
+
             services.AddScoped<IEncrypter, SymmetricKeyEncrypter>();
             services.AddTransient<SymmetricAlgorithm, AesCryptoServiceProvider>();      // could switch this to DES, RC2, Rijndael or TripleDES
             services.AddScoped<IKeyStore<SymmetricKey>, S3KeyStore<SymmetricKey>>();

@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snoop.API.APIGateway", "Sno
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snoop.API.EncryptionService", "Snoop.API.EncryptionService\Snoop.API.EncryptionService.csproj", "{5FE22040-3060-41F8-9F53-F0B873BF5BA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snoop.API.UnitTests", "Snoop.API.UnitTests\Snoop.API.UnitTests.csproj", "{1C093261-6783-4889-AA5C-631BAA03736E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snoop.API.UnitTests", "Snoop.API.UnitTests\Snoop.API.UnitTests.csproj", "{1C093261-6783-4889-AA5C-631BAA03736E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
