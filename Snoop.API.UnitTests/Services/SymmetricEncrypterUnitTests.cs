@@ -4,11 +4,14 @@ using AutoFixture;
 using AutoFixture.Xunit2;
 using AutoFixture.AutoMoq;
 using FluentAssertions;
+using System.Linq;
+using System.Text;
 using System.Security.Cryptography;
 using Moq;
 using Snoop.API.EncryptionService.Services.Interfaces;
 using Snoop.API.EncryptionService.Services;
 using Snoop.API.EncryptionService.Models;
+using Snoop.Common.Models;
 
 namespace Snoop.API.UnitTests
 {
@@ -42,13 +45,64 @@ namespace Snoop.API.UnitTests
             var symmetricKeyEncrypter = this.Fixture.Create<SymmetricKeyEncrypter>();
             symmetricKeyEncrypter.RotateKeys();
 
-            // check the key generator was asked for a couple of keys of the same length
+            // check the key generator was asked for a couple of keys of the correct length
             _keyGeneratorMock.Verify(kg => kg.GetUniqueKey(It.Is<int>(i => i == SymmetricKeyEncrypter.KEY_LENGTH)), Times.Exactly(2));
 
             // check the key store was written to
             _keyStoreMock.Verify(ks => ks.StoreNewKey(It.Is<SymmetricKey>(sk => sk.Key == uniqueKey1 && sk.InitializationVector == uniqueKey2)), Times.Once);
+        }
+        
+        [Fact]
+        public void GetStatus()
+        {
+            var expectedStatus = this.Fixture.Freeze<HealthStatus>();
+
+            var symmetricKeyEncrypter = this.Fixture.Create<SymmetricKeyEncrypter>();
+            var status = symmetricKeyEncrypter.GetStatus();
+
+            status.Available.Should().Be(expectedStatus.Available);
+            status.NewestKey.Should().Be(expectedStatus.NewestKey);
+            status.OldestKey.Should().Be(expectedStatus.OldestKey);
+
+            _keyStoreMock.Verify(ks => ks.GetStatus(), Times.Once);
+        }
+
+
+        [Fact]
+        public void TryEncrypt()
+        {
+            var textToEncrypt = Fixture.Create<string>();
+            var activeKey = Fixture.Create<SymmetricKey>();
+            byte[] keyBytes = null;
+            byte[] ivBytes = null;
+
+            _keyStoreMock.Setup(ks => ks.GetActiveKey()).Returns(activeKey);
+            _symmetricAlgorithmMock.Setup(sa => sa.CreateEncryptor(It.IsAny<byte[]>(), It.IsAny<byte[]>()))
+                .Returns(Fixture.Create<ICryptoTransform>())
+                .Callback<byte[], byte[]>((k, iv) => { keyBytes = k; ivBytes = iv; });
+
+            var symmetricKeyEncrypter = this.Fixture.Create<SymmetricKeyEncrypter>();
+            bool success = symmetricKeyEncrypter.TryEncrypt(textToEncrypt, out string decrypted);
+
+            success.Should().BeTrue();
+            decrypted.Should().NotBe(textToEncrypt);    // more work to do here
+
+            _keyStoreMock.Verify(ks => ks.GetActiveKey(), Times.Once);
+            _symmetricAlgorithmMock.Verify((sa => sa.CreateEncryptor(It.IsAny<byte[]>(), It.IsAny<byte[]>())), Times.Once);
+
+            // Check an encrypter the active key was used for the encryption
+            keyBytes.Should().BeEquivalentTo(GetBytes(activeKey.Key));
+            ivBytes.Should().BeEquivalentTo(GetBytes(activeKey.InitializationVector));
 
         }
+
+        private byte[] GetBytes(string text)
+        {
+            return Encoding.UTF8.GetBytes(text);
+        }
+
+
+        // And so on...
 
     }
 }

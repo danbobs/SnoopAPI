@@ -13,7 +13,7 @@ namespace Snoop.API.UnitTests
         public TestBase()
         {
             this.Fixture = new Fixture();
-            this.Fixture.Customize(new AutoMoqCustomization());
+            this.Fixture.Customize(new AutoMoqCustomization() { ConfigureMembers = true }); ;
             this.Fixture.Behaviors.Remove(new ThrowingRecursionBehavior());
             this.Fixture.Behaviors.Add(new OmitOnRecursionBehavior());
         }
